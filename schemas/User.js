@@ -7,7 +7,7 @@ let UserSchema = new mongoose.Schema({
     }
 });
 
-UserSchema.pre('save', () => console.log('Hello from pre save'));
+//UserSchema.pre('save', () => console.log('Hello from pre save'));
 
 
 module.exports = mongoose.model('User',UserSchema);
