@@ -85,9 +85,21 @@ app.post('/api/users/:_id/exercises',async function (req,res){
 });
 
 app.get('/api/users/:_id/logs',async function(req,res){
-  console.log(req.body.to);
+  console.log(req?.query);
   mongoose.connect(process.env.MONGO_URI)
   let exerLog = await ExerciseLog.findOne({_id: req.params._id}).exec();
+  if (req.query.from)
+    exerLog.log = exerLog.log.filter((elem)=>{
+  console.log(new Date(elem.date) >= new Date(req.query.from));
+      return new Date(elem.date) >= new Date(req.query.from)
+    })
+  if (req.query.to)
+    exerLog.log = exerLog.log.filter((elem)=>{
+      return new Date(elem.date) <= new Date(req.query.to)
+    })
+  if (req.query.limit)
+    exerLog.log = exerLog.log.slice(0,req.query.limit)
+  console.log(exerLog);
   res.json(exerLog)
 });
 
